@@ -1,3 +1,4 @@
 *.png:Zone.Identifier
 *.mp3:Zone.Identifier
+*.zip
 .claude/
