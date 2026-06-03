@@ -104,5 +104,34 @@ const fe=sessionStorage.getItem('fromEnding');sessionStorage.removeItem('fromEnd
 if(fe){document.getElementById('choices').style.display='flex';document.getElementById('reveal-btn').style.display='none'}else{document.getElementById('reveal-btn').style.display='block'}
 </script>
 <div class="node-nav"><a href="node1.html">1</a><a href="node2.html">2</a><a href="node3.html">3</a><a href="node4.html" class="active">4</a></div>
+<script>
+(function(){var ov=document.createElement('div');
+ov.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:999;pointer-events:none;display:none';
+var ca=document.createElement('canvas');
+ca.style.cssText='position:absolute;top:0;left:0;width:100%;height:100%';
+ov.appendChild(ca);document.body.appendChild(ov);
+var C=ca,X=C.getContext('2d');
+function R(){C.width=innerWidth;C.height=innerHeight}R();addEventListener('resize',R);
+var _t=sessionStorage.getItem('_trans');sessionStorage.removeItem('_trans');
+if(_t){ov.style.display='block';var _s=performance.now();
+(function f(n){var t=Math.min((n-_s)/450,1),e=1-Math.pow(1-t,3),a=1-e;
+X.clearRect(0,0,C.width,C.height);
+X.fillStyle='rgba(245,242,235,'+a+')';X.fillRect(0,0,C.width,C.height);
+for(var i=0;i<50;i++){X.beginPath();X.arc(Math.random()*C.width,Math.random()*C.height,Math.random()*2+0.5,0,Math.PI*2);X.fillStyle='rgba(255,255,255,'+(a*0.4)+')';X.fill()}
+if(t<1)requestAnimationFrame(f);else ov.style.display='none'})()}
+document.addEventListener('click',function(e){
+var a=e.target.closest('a');if(!a||a.id==='music-btn')return;
+var h=a.getAttribute('href');if(!h||h==='#'||h.startsWith('javascript:'))return;
+e.preventDefault();sessionStorage.setItem('_trans','1');
+ov.style.display='block';var _s=performance.now(),W=C.width,H=C.height,cx=W/2,cy=H/2;
+(function f(n){var t=Math.min((n-_s)/750,1),e=1-Math.pow(1-t,3);
+X.clearRect(0,0,W,H);
+X.fillStyle='rgba(245,242,235,'+(e*0.95)+')';X.fillRect(0,0,W,H);
+var N=60+Math.floor(e*140);
+for(var i=0;i<N;i++){var ag=i*2.4+e*2+Math.sin(i)*0.6,dist=Math.random()*Math.max(W,H)*0.85;
+X.beginPath();X.arc(cx+Math.cos(ag)*dist*e,cy+Math.sin(ag)*dist*e,Math.random()*2.5+0.5,0,Math.PI*2);
+X.fillStyle='rgba(255,255,255,'+(0.2+Math.random()*0.6*e)+')';X.fill()}
+if(t<1)requestAnimationFrame(f);else window.location.href=h})()})})();
+</script>
 </body>
 </html>
