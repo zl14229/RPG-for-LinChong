@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结局 · 雪夜的复仇 — 林冲·命运之择</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a12;color:#e0d5b8;font-family:'Noto Sans SC','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,rgba(40,5,5,0.50),rgba(50,8,8,0.48)),url('background/revenge.png') center/cover no-repeat fixed}
+#snow-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.container{position:relative;z-index:2;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.5vh 4vw}
+.header{text-align:center;flex-shrink:0;margin-bottom:1.5vh}
+.end-badge{display:inline-block;padding:0.5vh 2vw;border:2px solid #d43a3a;border-radius:4px;font-size:1.8vh;letter-spacing:5px;color:#d43a3a;margin-bottom:0.8vh;font-weight:600}
+.header h1{font-size:5.4vh;letter-spacing:10px;color:#f0e0b8;text-shadow:0 0 30px rgba(196,30,58,0.25);font-weight:900}
+.header .divider{width:5vh;height:2px;background:linear-gradient(90deg,transparent,#d43a3a,transparent);margin:0.8vh auto}
+.header .subtitle{font-size:1.9vh;color:#a09070;letter-spacing:5px;font-weight:500}
+.story-box{border:1px solid rgba(196,30,58,0.3);border-radius:8px;padding:2vh 3vw;line-height:1.7;font-size:3vh;color:#d4c9a8;max-width:82vw;overflow:hidden;background:rgba(0,0,0,0.5)}
+.story-box .highlight{color:#f0e0b8;font-weight:600}
+.story-box .danger{color:#e84a4a;font-weight:700}
+.story-box .quote{color:#a09070;padding-left:1.5vw;border-left:3px solid rgba(196,30,58,0.35);margin:0.6vh 0;font-weight:500;font-size:2vh}
+.story-box .action-line{text-align:center;margin:1vh 0;padding:0.8vh;font-size:2.4vh;letter-spacing:6px;color:#d43a3a;border-top:1px solid rgba(196,30,58,0.25);border-bottom:1px solid rgba(196,30,58,0.25);font-weight:700}
+.story-box p{margin-bottom:0.3vh}
+.epilogue{text-align:center;margin:1vh 0;flex-shrink:0}
+.epilogue .line{font-size:2.4vh;letter-spacing:6px;color:#d43a3a;font-weight:600}
+.epilogue .line2{font-size:1.8vh;color:#7a6e50;letter-spacing:3px;margin-top:0.5vh}
+.actions{display:flex;justify-content:center;gap:2vw;flex-shrink:0}
+.action-btn{display:inline-block;padding:1vh 3vw;font-size:2vh;font-family:inherit;color:#d43a3a;background:rgba(30,28,40,0.85);border:2px solid rgba(196,30,58,0.35);border-radius:6px;cursor:pointer;text-decoration:none;letter-spacing:5px;transition:all .3s;font-weight:500}
+.action-btn:hover{background:rgba(50,40,50,0.92);border-color:#d43a3a;box-shadow:0 0 3vh rgba(196,30,58,0.15)}
+.action-btn.primary{color:#f0e0b8;border-color:#d43a3a}
+.action-btn.primary:hover{box-shadow:0 0 4vh rgba(196,30,58,0.25)}
+#music-btn{position:fixed;top:18px;right:18px;z-index:10;width:40px;height:40px;border-radius:50%;border:2px solid rgba(196,30,58,0.35);background:rgba(10,10,18,0.75);color:#a09070;font-size:18px;cursor:pointer;transition:all .3s;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+#music-btn:hover{border-color:#d43a3a;color:#f0e0b8}
+#music-btn.playing{color:#d43a3a;border-color:#d43a3a;box-shadow:0 0 15px rgba(196,30,58,0.25)}
+</style>
+</head>
+<body>
+<button id="music-btn" onclick="toggleMusic()">♫</button>
+<audio id="bgm" src="bgm/high.mp3" loop preload="auto"></audio>
+<canvas id="snow-canvas"></canvas>
+<div class="container">
+  <div class="header">
+    <div class="end-badge">经 典 结 局</div>
+    <h1>雪 夜 的 复 仇</h1>
+    <div class="subtitle">— 林教头风雪山神庙 · 原著 —</div>
+    <div class="divider"></div>
+  </div>
+  <div class="story-box" id="story-box">
+    <p><span class="highlight">林冲听那三个人时，一个是差拨，一个是陆虞候，一个是富安。</span></p>
+    <p>林冲道："天可怜见林冲！若不是倒了草厅，我准定被这厮们烧死了！"</p>
+    <div class="action-line">— 轻轻把石头掇开，挺着花枪 —</div>
+    <p>一手拽开庙门，大喝一声：<span class="danger">"泼贼那里去！"</span></p>
+    <p>三个人惊得呆了。林冲举手，<span class="highlight">肐察的一枪，先戳倒差拨</span>。赶上一枪又戳倒富安。翻身回来，<span class="highlight">批胸只一提，将陆谦丢翻在雪地上</span>，用脚踏住胸脯，取出刀来喝道：</p>
+    <div class="quote">"泼贼！我自来又和你无什么冤仇，你如何这等害我！正是：<span class="danger">杀人可恕，情理难容。</span>"</div>
+    <p>陆虞候告道："不干小人事，太尉差遣，不敢不来。"</p>
+    <p>林冲骂道：<span class="highlight">"奸贼，我与你自幼相交，今日倒来害我，怎不干你事！且吃我一刀。"</span> 把尖刀向心窝里只一剜，七窍迸出血来，将心肝提在手里。又将差拨、富安、陆谦三颗头发结做一处，<span class="highlight">提入庙里摆在山神面前供桌上</span>。将葫芦里冷酒吃尽，提了枪，出庙门投东去。</p>
+  </div>
+  <div class="epilogue">
+    <div class="line">— 林 教 头 风 雪 山 神 庙 —</div>
+    <div class="line2">那雪越下越猛，一条好汉提枪投东而去。</div>
+  </div>
+  <div class="actions">
+    <a href="node4.html" class="action-btn primary">上一节点</a>
+    <a href="index.html" class="action-btn">返回首页</a>
+  </div>
+</div>
+<script>
+const c=document.getElementById('snow-canvas'),x=c.getContext('2d');
+function R(){c.width=innerWidth;c.height=innerHeight}R();addEventListener('resize',R);const S=[],N=100;for(let i=N;i--;)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2.5+0.5,s:Math.random()*0.8+0.2,o:Math.random()*0.4+0.15});
+function D(){x.clearRect(0,0,c.width,c.height);for(const f of S){x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fillStyle=`rgba(200,195,185,${f.o})`;x.fill();f.y+=f.s;f.x+=Math.sin(f.y*0.008)*0.3;if(f.y>c.height){f.y=-f.r;f.x=Math.random()*c.width}}requestAnimationFrame(D)}D();
+const bgm=document.getElementById('bgm');let playing=false;
+const ps=sessionStorage.getItem('bgmSrc'),st=sessionStorage.getItem('bgmTime');
+if(ps===bgm.src&&st)bgm.currentTime=+st;
+sessionStorage.setItem('bgmSrc',bgm.src);
+function toggleMusic(){if(bgm.paused){bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{})}else{bgm.pause();playing=false;document.getElementById('music-btn').textContent='♫';document.getElementById('music-btn').classList.remove('playing')}}
+window.addEventListener('load',()=>{bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{});document.addEventListener('click',()=>{if(bgm.paused)bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{})},{once:true})});
+window.addEventListener('beforeunload',()=>{sessionStorage.setItem('bgmTime',bgm.currentTime);sessionStorage.setItem('fromEnding','1')});
+</script>
+</body>
+</html>

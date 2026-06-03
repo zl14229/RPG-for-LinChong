@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>节点四 · 山神庙·真相 — 林冲·命运之择</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a12;color:#e0d5b8;font-family:'Noto Sans SC','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,rgba(25,5,5,0.50),rgba(40,8,8,0.55)),url('background/node4.png') center/cover no-repeat fixed}
+#snow-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.container{position:relative;z-index:2;height:100vh;overflow:hidden;display:flex;flex-direction:column;padding:2.5vh 3vw;max-width:90vw;margin:0 auto}
+.header{text-align:center;flex-shrink:0}
+.node-badge{display:inline-block;padding:0.4vh 2vw;border:2px solid #d43a3a;border-radius:4px;font-size:2.2vh;letter-spacing:5px;color:#d43a3a;margin-bottom:0.8vh;font-weight:600}
+.header h1{font-size:5.6vh;letter-spacing:10px;color:#f0e0b8;text-shadow:0 0 20px rgba(200,50,50,0.2);font-weight:900}
+.header .divider{width:5vh;height:2px;background:linear-gradient(90deg,transparent,#d43a3a,transparent);margin:0.6vh auto}
+.content-area{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:0}
+.section-title{font-size:2.6vh;color:#d4b050;letter-spacing:5px;margin-bottom:0.8vh;display:flex;align-items:center;gap:10px;font-weight:600;flex-shrink:0}
+.section-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(212,176,80,0.3),transparent)}
+.status-box{border:1px solid rgba(196,30,58,0.25);border-radius:8px;padding:1.6vh 2.2vw;margin-bottom:1.2vh;line-height:1.7;font-size:3.2vh;color:#d4c9a8;flex-shrink:0;background:rgba(0,0,0,0.5)}
+.status-box .highlight{color:#f0e0b8;font-weight:600}
+.status-box .danger{color:#e84a4a;font-weight:700}
+.status-box .quote{color:#a09070;font-style:italic;padding-left:1.5vw;border-left:3px solid rgba(196,30,58,0.35);margin:0.6vh 0;font-weight:500;font-size:2.4vh}
+.status-box p{margin-bottom:0.4vh}
+.choices{display:flex;flex-direction:column;gap:0.8vh;flex-shrink:0}
+.choice{display:block;background:rgba(20,18,30,0.88);border:2px solid rgba(196,30,58,0.2);border-radius:8px;padding:1.5vh 2vw;text-decoration:none;color:#d4c9a8;transition:all .3s;cursor:pointer;backdrop-filter:blur(6px)}
+.choice:hover{background:rgba(45,38,60,0.92);border-color:#d43a3a;transform:translateX(4px);box-shadow:0 0 3vh rgba(196,30,58,0.15)}
+.choice .main-row{display:flex;align-items:center;margin-bottom:0.3vh}
+.choice .letter{display:inline-flex;width:3.8vh;height:3.8vh;align-items:center;justify-content:center;border:2px solid #d43a3a;border-radius:50%;font-size:2.6vh;color:#d43a3a;margin-right:1.4vw;flex-shrink:0;font-weight:700}
+.choice .text{font-size:3.8vh;color:#f0e0b8;letter-spacing:2px;font-weight:700}
+.choice .desc{font-size:2.8vh;color:#a09070;margin-left:5vw;line-height:1.5}
+.back-link{display:inline-block;margin-top:0.6vh;font-size:2.2vh;color:#7a6e50;text-decoration:none;letter-spacing:2px;transition:color .3s;font-weight:500;flex-shrink:0}
+.back-link:hover{color:#d4b050}
+#music-btn{position:fixed;top:18px;right:18px;z-index:10;width:40px;height:40px;border-radius:50%;border:2px solid rgba(196,30,58,0.35);background:rgba(10,10,18,0.75);color:#a09070;font-size:18px;cursor:pointer;transition:all .3s;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+#music-btn:hover{border-color:#d43a3a;color:#f0e0b8}
+#music-btn.playing{color:#d43a3a;border-color:#d43a3a;box-shadow:0 0 15px rgba(196,30,58,0.25)}
+.reveal-btn{display:none;cursor:pointer;text-align:center;padding:1vh 0;font-size:2.6vh;color:#d4b050;letter-spacing:4px;border:1px dashed rgba(212,176,80,0.3);border-radius:6px;transition:all .3s;flex-shrink:0}
+.reveal-btn:hover{border-color:#d4b050;background:rgba(212,176,80,0.06);color:#f0e0b8}
+.node-nav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:10;display:flex;gap:6px}
+.node-nav a{display:flex;width:26px;height:26px;align-items:center;justify-content:center;border-radius:50%;border:1px solid rgba(196,30,58,0.25);background:rgba(10,10,18,0.55);color:#6b5f48;font-size:12px;text-decoration:none;transition:all .3s;backdrop-filter:blur(3px);font-weight:600}
+.node-nav a:hover{border-color:#d43a3a;color:#f0e0b8}
+.node-nav a.active{background:#d43a3a;border-color:#d43a3a;color:#f0e0b8}
+</style>
+</head>
+<body>
+<button id="music-btn" onclick="toggleMusic()">♫</button>
+<audio id="bgm" src="bgm/soft.mp3" loop preload="auto"></audio>
+<canvas id="snow-canvas"></canvas>
+<div class="container">
+  <div class="header">
+    <div class="node-badge">节 点 四</div>
+    <h1>山神庙 · 真 相</h1>
+    <div class="divider"></div>
+  </div>
+  <div class="content-area">
+    <div class="section-title">草料场外 · 山神庙</div>
+    <div class="status-box" id="status-box">
+      <p>林冲沽酒归来，发现那两间草厅已被大雪压倒。天色已黑，无处安身，便来到半里外的古庙，掇大石靠了门，取冷酒牛肉来吃。</p>
+      <p>正吃时，只听外面<span class="danger">必必剥剥爆响</span>，从壁缝中看时，草料场<span class="danger">大火冲天</span>！正待救火，却听三人脚步声朝庙来——推不开门，便在檐下看火，得意道：</p>
+      <div class="quote">"林冲今番直吃我们对付了……便逃得性命时，烧了大军草料场，也得个死罪……拾得他一两块骨头回京府里见太尉和衙内。"</div>
+      <p>林冲听得分明——正是<span class="danger">陆谦、差拨、富安</span>！霎时间怒火冲天，提枪在手。</p>
+    </div>
+    <div class="section-title">面 临 抉 择</div>
+    <div class="reveal-btn" id="reveal-btn" onclick="revealChoices()">— 点击此处做出抉择 —</div>
+    <div class="choices" id="choices" style="display:none">
+      <a href="revenge.html" class="choice"><div class="main-row"><span class="letter">A</span><span class="text">开门怒杀三人</span></div><div class="desc">大喝一声"泼贼那里去！"，挺枪开门杀出。手刃仇人，快意恩仇。</div></a>
+      <a href="death.html?from=4B" class="choice"><div class="main-row"><span class="letter">B</span><span class="text">忍辱离去</span></div><div class="desc">忍下这口恶气，趁其不备悄悄离去。但草料场被烧，朝廷追究下来，何处容身？</div></a>
+      <a href="rebel.html?from=4C" class="choice"><div class="main-row"><span class="letter">C</span><span class="text">先发制人，设伏反杀</span></div><div class="desc">不贸然开门，利用庙中地形，等三人进来时逐个击破。</div></a>
+    </div>
+  </div>
+  <div style="display:flex;justify-content:space-between;flex-shrink:0;width:100%">
+    <a href="node3.html" class="back-link">〈 上一节点</a>
+    <a href="index.html" class="back-link">返回首页 〉</a>
+  </div>
+</div>
+<script>
+const c=document.getElementById('snow-canvas'),x=c.getContext('2d');
+function R(){c.width=innerWidth;c.height=innerHeight}R();addEventListener('resize',R);const S=[],N=80;for(let i=N;i--;)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2.5+0.5,s:Math.random()*0.8+0.2,o:Math.random()*0.4+0.15});
+function D(){x.clearRect(0,0,c.width,c.height);for(const f of S){x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fillStyle=`rgba(200,195,185,${f.o})`;x.fill();f.y+=f.s;f.x+=Math.sin(f.y*0.008)*0.2;if(f.y>c.height){f.y=-f.r;f.x=Math.random()*c.width}}requestAnimationFrame(D)}D();
+const bgm=document.getElementById('bgm');let playing=false;
+const ps=sessionStorage.getItem('bgmSrc'),st=sessionStorage.getItem('bgmTime');
+if(ps===bgm.src&&st)bgm.currentTime=+st;
+sessionStorage.setItem('bgmSrc',bgm.src);
+function toggleMusic(){if(bgm.paused){bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{})}else{bgm.pause();playing=false;document.getElementById('music-btn').textContent='♫';document.getElementById('music-btn').classList.remove('playing')}}
+window.addEventListener('load',()=>{bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{});document.addEventListener('click',()=>{if(bgm.paused)bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{})},{once:true})});
+window.addEventListener('beforeunload',()=>sessionStorage.setItem('bgmTime',bgm.currentTime));
+function revealChoices(){document.getElementById('choices').style.display='flex';document.getElementById('reveal-btn').style.display='none'}
+const fe=sessionStorage.getItem('fromEnding');sessionStorage.removeItem('fromEnding');
+if(fe){document.getElementById('choices').style.display='flex';document.getElementById('reveal-btn').style.display='none'}else{document.getElementById('reveal-btn').style.display='block'}
+</script>
+<div class="node-nav"><a href="node1.html">1</a><a href="node2.html">2</a><a href="node3.html">3</a><a href="node4.html" class="active">4</a></div>
+</body>
+</html>

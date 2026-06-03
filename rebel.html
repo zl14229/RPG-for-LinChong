@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>结局 · 逼上梁山 — 林冲·命运之择</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:#0a0a12;color:#e0d5b8;font-family:'Noto Sans SC','Microsoft YaHei','PingFang SC','Helvetica Neue',Arial,sans-serif}
+body{--bg:url('background/rebel_1C.png')}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;background:linear-gradient(180deg,rgba(30,18,8,0.45),rgba(40,20,10,0.50)),var(--bg) center/cover no-repeat fixed}
+#snow-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.container{position:relative;z-index:2;height:100vh;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3vh 4vw}
+.header{text-align:center;flex-shrink:0;margin-bottom:2vh}
+.end-badge{display:inline-block;padding:0.6vh 2vw;border:2px solid #d4b050;border-radius:4px;font-size:1.9vh;letter-spacing:5px;color:#d4b050;margin-bottom:1.2vh;font-weight:600}
+.header h1{font-size:6.1vh;letter-spacing:12px;color:#d4b050;text-shadow:0 0 20px rgba(212,176,80,0.15);font-weight:900}
+.header .divider{width:5vh;height:2px;background:linear-gradient(90deg,transparent,#d4b050,transparent);margin:1.2vh auto}
+.story-box{border:1px solid rgba(212,176,80,0.25);border-radius:8px;padding:2.5vh 3vw;line-height:1.8;font-size:3vh;color:#d4c9a8;max-width:82vw;overflow:hidden;background:rgba(0,0,0,0.5)}
+.story-box .highlight{color:#d4b050;font-weight:700}
+.story-box .italic{color:#7a6e50;font-style:italic}
+.epilogue{text-align:center;margin:1.5vh 0;flex-shrink:0}
+.epilogue .line{font-size:2.7vh;letter-spacing:8px;color:#d4b050;font-weight:600}
+.actions{display:flex;justify-content:center;gap:2vw;flex-shrink:0}
+.action-btn{display:inline-block;padding:1.2vh 3.5vw;font-size:2.2vh;font-family:inherit;color:#d4b050;background:rgba(30,28,40,0.85);border:2px solid rgba(212,176,80,0.35);border-radius:6px;cursor:pointer;text-decoration:none;letter-spacing:5px;transition:all .3s;font-weight:500}
+.action-btn:hover{background:rgba(50,45,60,0.92);border-color:#d4b050;box-shadow:0 0 2vh rgba(212,176,80,0.12)}
+.action-btn.primary{color:#f0e0b8;border-color:#d4b050}
+.action-btn.primary:hover{box-shadow:0 0 3vh rgba(212,176,80,0.2)}
+#music-btn{position:fixed;top:18px;right:18px;z-index:10;width:40px;height:40px;border-radius:50%;border:2px solid rgba(212,176,80,0.35);background:rgba(10,10,18,0.75);color:#a09070;font-size:18px;cursor:pointer;transition:all .3s;backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center}
+#music-btn:hover{border-color:#d4b050;color:#f0e0b8}
+#music-btn.playing{color:#d4b050;border-color:#d4b050;box-shadow:0 0 15px rgba(212,176,80,0.2)}
+</style>
+</head>
+<body>
+<button id="music-btn" onclick="toggleMusic()">♫</button>
+<audio id="bgm" src="bgm/high.mp3" loop preload="auto"></audio>
+<canvas id="snow-canvas"></canvas>
+<div class="container">
+  <div class="header">
+    <div class="end-badge">结 局</div>
+    <h1>逼 上 梁 山</h1>
+    <div class="divider"></div>
+  </div>
+  <div class="story-box" id="story-content"><p id="story-text"></p></div>
+  <div class="epilogue"><div class="line">— 官 逼 民 反 · 无 路 可 退 —</div></div>
+  <div class="actions">
+    <a id="back-btn" href="node1.html" class="action-btn primary">上一节点</a>
+    <a href="index.html" class="action-btn">返回首页</a>
+  </div>
+</div>
+<script>
+const stories = {
+  '1C':{title:'先发制人 · 手刃仇敌',text:'林冲趁夜色潜入，一杆花枪连杀陆谦、富安、差拨。你用实际行动向高俅宣告：林冲，绝不任人宰割！你带着血仇，消于江湖，唯有反抗的火焰在风雪中燃烧。沧州城中大索，林冲连夜出逃，投奔梁山泊。<br><br>正是：<span class="highlight">身被刺配犹未悔，一朝杀人便无归。</span>'},
+  '2C':{title:'假意应承 · 中途脱逃',text:'林冲假意接受调令，行至半路刺倒差拨夺路而逃。陆谦率人追杀，林冲反身死战，连杀数人后将陆谦一枪刺死。仰天大笑三声，随即大哭——大好头颅，只能亡命江湖，遂冒雪投梁山而去。<br><br>正是：<span class="highlight">世道不公逼人反，风雪孤身赴梁山。</span>'},
+  '4C':{title:'庙中设伏 · 智取三贼',text:'林冲隐在门后，等三人推门而入，先一枪刺死差拨，再赶上富安一枪穿透后心。陆谦跪地求饶，林冲冷笑："你我自幼相交，你为了讨好高俅父子，竟要置我于死地！"手起刀落，剜了陆谦心肝，三颗人头摆在供桌上，一把火烧了山神庙，投东而去。<br><br>正是：<span class="highlight">山神庙中三颗头，从此天地一孤鸥。</span>'}
+};
+const p=new URLSearchParams(window.location.search),f=p.get('from')||'1C',s=stories[f]||stories['1C'];
+const bgMap={'1C':'rebel_1C.png','2C':'rebel_2C.png','4C':'rebel_4C.png'};
+document.body.style.setProperty('--bg',"url('background/"+bgMap[f]+"')");
+const storyHTML='<strong style="display:block;text-align:center;font-size:3vh;letter-spacing:6px;color:#d4b050;margin-bottom:1.5vh;font-weight:700">'+s.title+'</strong>'+s.text;
+document.getElementById('back-btn').href='node'+(f.charAt(0)||'1')+'.html';
+const storyEl=document.getElementById('story-text');
+storyEl.innerHTML = storyHTML;
+</script>
+<script>
+const c=document.getElementById('snow-canvas'),x=c.getContext('2d');
+function R(){c.width=innerWidth;c.height=innerHeight}R();addEventListener('resize',R);const S=[],N=55;for(let i=N;i--;)S.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+0.5,s:Math.random()*0.5+0.2,o:Math.random()*0.3+0.12});
+function D(){x.clearRect(0,0,c.width,c.height);for(const f of S){x.beginPath();x.arc(f.x,f.y,f.r,0,Math.PI*2);x.fillStyle=`rgba(200,195,185,${f.o})`;x.fill();f.y+=f.s;f.x+=Math.sin(f.y*0.008)*0.15;if(f.y>c.height){f.y=-f.r;f.x=Math.random()*c.width}}requestAnimationFrame(D)}D();
+const bgm=document.getElementById('bgm');let playing=false;
+const ps=sessionStorage.getItem('bgmSrc'),st=sessionStorage.getItem('bgmTime');
+if(ps===bgm.src&&st)bgm.currentTime=+st;
+sessionStorage.setItem('bgmSrc',bgm.src);
+function toggleMusic(){if(bgm.paused){bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{})}else{bgm.pause();playing=false;document.getElementById('music-btn').textContent='♫';document.getElementById('music-btn').classList.remove('playing')}}
+window.addEventListener('load',()=>{bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{});document.addEventListener('click',()=>{if(bgm.paused)bgm.play().then(()=>{playing=true;document.getElementById('music-btn').textContent='♩';document.getElementById('music-btn').classList.add('playing')}).catch(()=>{})},{once:true})});
+window.addEventListener('beforeunload',()=>{sessionStorage.setItem('bgmTime',bgm.currentTime);sessionStorage.setItem('fromEnding','1')});
+</script>
+</body>
+</html>
